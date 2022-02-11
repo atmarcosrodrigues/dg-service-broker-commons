@@ -1,0 +1,39 @@
+<configuration>
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%boldWhite(%d{HH:mm:ss.SSS}) %cyan(%-5level) %boldBlue([%thread{10}]) %green(%logger{36}->%M):%yellow(%L) - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="FILE" class="ch.qos.logback.core.FileAppender">
+        <file>${application.home:-.}/logs/service-broker-common.log</file>
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} %-5level [%thread] %logger->%M:%L - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="ASYNCFILE" class="ch.qos.logback.classic.AsyncAppender">
+        <appender-ref ref="FILE" />
+        <includeCallerData>true</includeCallerData>
+    </appender>
+
+    <appender name="ASYNCSTDOUT" class="ch.qos.logback.classic.AsyncAppender">
+        <appender-ref ref="STDOUT" />
+        <includeCallerData>true</includeCallerData>
+    </appender>
+
+    <root level="DEBUG">
+        <appender-ref ref="ASYNCFILE" />
+    </root>
+
+    <root level="DEBUG">
+        <appender-ref ref="ASYNCSTDOUT" />
+    </root>
+
+    <logger name="org.mongodb.driver" level="WARN"/>
+    <logger name="ch.qos.logback" level="ERROR"/>
+    <logger name="org.apache.commons.configuration" level="WARN"/>
+    <logger name="org.apache.http.wire" level="INFO"/>
+
+</configuration>
